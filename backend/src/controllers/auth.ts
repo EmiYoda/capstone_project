@@ -13,12 +13,13 @@ const users = db.collection<UserSchema>("users");
 
 export const Register = async ({request, response}: RouterContext) => {
 try {
-    const {name, email, password} = await request.body().value;
+    const {name, email, password, created_at} = await request.body().value;
 
     const insertId =  await users.insertOne({
          name, 
          email,
-         password: await bcrypt.hash(password)
+         password: await bcrypt.hash(password),
+         created_at: new Date()
      })
      const user = await users.findOne({ _id: insertId }, {noCursorTimeout: false} as any);
 
