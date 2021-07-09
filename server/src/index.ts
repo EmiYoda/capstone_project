@@ -3,6 +3,10 @@ import { Post } from "./entities/Post";
 import { __prod__ } from "./constants";
 import dotenv from "dotenv";
 import path from "path";
+import express from "express";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import { HelloResolver } from "./resolvers/hello";
 
 dotenv.config();
 
@@ -21,11 +25,20 @@ const main = async () => {
   });
   await orm.getMigrator().up();
 
-  //   const post = orm.em.create(Post, { title: "my first post" });
-  //   await orm.em.persistAndFlush(post);
+  const app = express();
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [HelloResolver],
+      validate: false,
+    }),
+  });
 
-  //   const posts = await orm.em.find(Post, {});
-  //   console.log(posts);
+  apolloServer.applyMiddleware({ app });
+
+  const port = process.env.PORT || 8000;
+  app.listen(port, () => {
+    console.log(`Server is running on ${port}`);
+  });
 };
 
 main().catch((err) => {

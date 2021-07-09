@@ -17,6 +17,10 @@ const Post_1 = require("./entities/Post");
 const constants_1 = require("./constants");
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
+const express_1 = __importDefault(require("express"));
+const apollo_server_express_1 = require("apollo-server-express");
+const type_graphql_1 = require("type-graphql");
+const hello_1 = require("./resolvers/hello");
 dotenv_1.default.config();
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const orm = yield core_1.MikroORM.init({
@@ -32,6 +36,18 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         debug: !constants_1.__prod__,
     });
     yield orm.getMigrator().up();
+    const app = express_1.default();
+    const apolloServer = new apollo_server_express_1.ApolloServer({
+        schema: yield type_graphql_1.buildSchema({
+            resolvers: [hello_1.HelloResolver],
+            validate: false,
+        }),
+    });
+    apolloServer.applyMiddleware({ app });
+    const port = process.env.PORT || 8000;
+    app.listen(port, () => {
+        console.log(`Server is running on ${port}`);
+    });
 });
 main().catch((err) => {
     console.log(err);
