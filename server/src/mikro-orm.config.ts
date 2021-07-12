@@ -1,12 +1,18 @@
-import { Post } from "./entities/Post";
-import { MikroORM } from "@mikro-orm/core";
 import { __prod__ } from "./constants";
+import "reflect-metadata";
+import { MikroORM } from "@mikro-orm/core";
+import path from "path";
+import { User } from "./entities/User";
+import { Post } from "./entities/Post";
 
 export default {
-  entities: [Post],
-  dbName: "photodb",
-  //   user: process.env.PSQL_USER,
-  //   password: process.env.PSQL_PASSWORD,
+  migrations: {
+    path: path.join(__dirname, "./migrations"),
+    pattern: /^[\w-]+\d+\.[tj]s$/,
+  },
+
+  entities: [Post, User],
+  dbName: "lireddit",
   type: "postgresql",
   debug: !__prod__,
 } as Parameters<typeof MikroORM.init>[0];

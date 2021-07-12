@@ -9,6 +9,8 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
+import { UserResolver } from "./resolvers/user";
+import { User } from "./entities/User";
 
 dotenv.config();
 
@@ -18,7 +20,7 @@ const main = async () => {
       path: path.join(__dirname, "./migrations"),
       pattern: /^[\w-]+\d+\.[tj]s$/,
     },
-    entities: [Post],
+    entities: [Post, User],
     dbName: "photodb",
     user: process.env.PSQL_USER,
     password: process.env.PSQL_PASSWORD,
@@ -31,7 +33,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver],
+      resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
     context: () => ({ em: orm.em }),
