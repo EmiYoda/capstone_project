@@ -11,6 +11,9 @@ import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import { User } from "./entities/User";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import { MyContext } from "./types";
 
 dotenv.config();
 
@@ -31,12 +34,30 @@ const main = async () => {
 
   const app = express();
 
+  app.use(
+    session({
+      name: "uid",
+      secret: `${process.env.SECRET}`,
+      store: MongoStore.create({
+        mongoUrl: process.env.MONGO,
+        ttl: 14 * 24 * 60 * 60, // 14days
+      }),
+      cookie: {
+        httpOnly: true,
+        secure: __prod__,
+        sameSite: "lax",
+        maxAge: 14 * 24 * 60 * 60,
+      },
+      saveUninitialized: false,
+    })
+  );
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: () => ({ em: orm.em }),
+    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
   });
 
   apolloServer.applyMiddleware({ app });

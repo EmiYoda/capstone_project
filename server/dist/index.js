@@ -25,6 +25,8 @@ const hello_1 = require("./resolvers/hello");
 const post_1 = require("./resolvers/post");
 const user_1 = require("./resolvers/user");
 const User_1 = require("./entities/User");
+const express_session_1 = __importDefault(require("express-session"));
+const connect_mongo_1 = __importDefault(require("connect-mongo"));
 dotenv_1.default.config();
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const orm = yield core_1.MikroORM.init({
@@ -41,12 +43,27 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     yield orm.getMigrator().up();
     const app = express_1.default();
+    app.use(express_session_1.default({
+        name: "uid",
+        secret: `${process.env.SECRET}`,
+        store: connect_mongo_1.default.create({
+            mongoUrl: process.env.MONGO,
+            ttl: 14 * 24 * 60 * 60,
+        }),
+        cookie: {
+            httpOnly: true,
+            secure: constants_1.__prod__,
+            sameSite: "lax",
+            maxAge: 14 * 24 * 60 * 60,
+        },
+        saveUninitialized: false,
+    }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: yield type_graphql_1.buildSchema({
             resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver],
             validate: false,
         }),
-        context: () => ({ em: orm.em }),
+        context: ({ req, res }) => ({ em: orm.em, req, res }),
     });
     apolloServer.applyMiddleware({ app });
     const port = process.env.PORT || 8000;
