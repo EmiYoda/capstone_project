@@ -1,10 +1,13 @@
-import * as React from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { gql, useQuery } from "@apollo/client";
 
 const App = () => {
   return (
-    <div>
-
+    <div className="app">
+      <Link to="/auth">Auth</Link>
     </div>
+
   );
 };
 
