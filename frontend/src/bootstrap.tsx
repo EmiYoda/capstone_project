@@ -22,15 +22,16 @@ const client = new ApolloClient({
 
 });
 
-
-import Auth from "./components/Auth/Auth";
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 
 function main() {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Route path="/" exact component={App} />
-        <Route path="/auth" component={Auth} />
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
       </BrowserRouter>
     </ApolloProvider>,
     document.querySelector(".app-wrapper")
