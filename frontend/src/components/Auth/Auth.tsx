@@ -4,13 +4,16 @@ import axios from "axios"
 const Auth = () => {
     const [registerName, setRegisterName] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
-    const [loginName, setLoginName] = useState("");
+    const [registerEmail, setRegisterEmail] = useState("");
+    const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false)
     const [data, setData] = useState(null);
     const register = () => {
         axios({
             method: "POST",
             data: {
+                email: registerEmail,
                 name: registerName,
                 password: registerPassword,
             },
@@ -22,23 +25,12 @@ const Auth = () => {
         axios({
             method: "POST",
             data: {
-                name: loginName,
+                email: loginEmail,
                 password: loginPassword,
             },
             url: "http://localhost:8000/api/login"
-        }).then((res) => console.log(res))
+        }).then((res) => console.log(res, setLoggedIn(true)))
     }
-
-    // const getUser = () => {
-    //     axios({
-    //         method: "POST",
-    //         data: {
-    //             name: loginName,
-    //             password: loginPassword,
-    //         },
-    //         url: "http://localhost:8000/api/login"
-    //     }).then((res) => console.log(res))
-    // }
     return (
         <div className="auth">
             <div>
@@ -51,14 +43,18 @@ const Auth = () => {
                     placeholder="password"
                     onChange={(e) => setRegisterPassword(e.target.value)}
                 />
+                <input
+                    placeholder="email"
+                    onChange={(e) => setRegisterEmail(e.target.value)}
+                />
                 <button onClick={register}>Submit</button>
             </div>
 
             <div>
                 <h1>Login</h1>
                 <input
-                    placeholder="username"
-                    onChange={(e) => setLoginName(e.target.value)}
+                    placeholder="email"
+                    onChange={(e) => setLoginEmail(e.target.value)}
                 />
                 <input
                     placeholder="password"
@@ -67,11 +63,11 @@ const Auth = () => {
                 <button onClick={login}>Submit</button>
             </div>
 
-            {/* <div>
-                <h1>Get User</h1>
-                <button onClick={getUser}>Submit</button>
-                {data ? <h1>Welcome Back {data.username}</h1> : null}
-            </div> */}
+            <div>
+                {
+                    loggedIn ? <h1>{loginEmail}</h1> : null
+                }
+            </div>
         </div>
     )
 }
