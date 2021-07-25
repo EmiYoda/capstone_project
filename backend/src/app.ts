@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/auth";
 import welcome from "./routes/welcome";
 import { MONGO } from "./config";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(
     })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.connect(
     `${MONGO}`,

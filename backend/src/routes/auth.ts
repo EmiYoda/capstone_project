@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../models/User";
-import jwt from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { SECRET } from "../config";
 
@@ -28,9 +28,13 @@ router.post("/register", async (req, res) => {
             password: encryptedPassword,
         });
 
-        const token = jwt.sign({ user_id: user._id, email }, SECRET, {
-            expiresIn: "2h",
-        });
+        const token = jsonwebtoken.sign(
+            { user_id: user._id, email, name },
+            SECRET,
+            {
+                expiresIn: "2h",
+            }
+        );
         user.token = token;
 
         res.status(201).json(user);
@@ -49,9 +53,13 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ email });
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign({ user_id: user._id, email }, SECRET, {
-                expiresIn: "2h",
-            });
+            const token = jsonwebtoken.sign(
+                { user_id: user._id, email },
+                SECRET,
+                {
+                    expiresIn: "2h",
+                }
+            );
 
             user.token = token;
 
