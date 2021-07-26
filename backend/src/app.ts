@@ -13,7 +13,8 @@ app.use(
         origin: "http://localhost:3000",
     })
 );
-app.use(express.json());
+app.use(express.json({ limit: "30mb" }));
+app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cookieParser());
 
 mongoose.connect(
@@ -24,6 +25,7 @@ mongoose.connect(
 
 app.use("/api", authRoutes);
 app.use("/api", welcome);
+// app.use("/api/files", fileRoutes);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {

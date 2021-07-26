@@ -8,13 +8,23 @@ const Auth = (props: any) => {
     const [registerPassword, setRegisterPassword] = useState("");
     const [registerEmail, setRegisterEmail] = useState("");
     const [loginEmail, setLoginEmail] = useState("");
+    const [loginName, setLoginName] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [isSignup, setIsSignup] = useState(false);
     const [token, setToken] = useState(props.token);
     const history = useHistory();
 
+    const redirect = () => {
+        if (token === '' || token === undefined || token === null) {
+            alert("Email or Password not correct")
+        } else {
+            history.push('/dashboard')
+        }
+    }
 
-    const register = async () => {
+
+    const register = async (e: any) => {
+        e.preventDefault()
         try {
             const call = await axios({
                 method: "POST",
@@ -28,18 +38,20 @@ const Auth = (props: any) => {
             setToken(call.data.token);
             const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();
             document.cookie = `token=${token}; secure=true; samesite=lax; max-age=${expires + 86400}; http-only=true`;
-            history.push('/dashboard');
+            redirect()
         } catch (error) {
             console.log(error)
         }
     }
 
-    const login = async () => {
+    const login = async (e: any) => {
+        e.preventDefault()
         try {
             const call = await axios({
                 method: "POST",
                 data: {
                     email: loginEmail,
+                    name: loginName,
                     password: loginPassword,
                 },
                 url: "http://localhost:8000/api/login"
@@ -47,53 +59,73 @@ const Auth = (props: any) => {
             setToken(call.data.token);
             const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();
             document.cookie = `token=${token}; secure=true; samesite=lax; max-age=${expires + 86400}; http-only=true`;
-            history.push('/dashboard');
+            redirect()
         } catch (error) {
             console.log(error)
         }
     }
+
 
     return (
         <div className="auth">
             <h3 className={isSignup ? "auth__option" : "active"} onClick={() => setIsSignup(false)} >Log In</h3>
             <h3 className={isSignup ? "active" : "auth__option"} onClick={() => setIsSignup(true)}>Register</h3>
             <form autoComplete="off" className="auth__form">
+                <h2>{isSignup ? "Register" : "Login"}</h2>
                 {
                     isSignup ?
                         <div>
-                            <input
-                                placeholder="username"
-                                onChange={(e) => setRegisterName(e.target.value)}
-                            />
-                            <input
-                                placeholder="password"
-                                onChange={(e) => setRegisterPassword(e.target.value)}
-                            />
-                            <input
-                                className="auth__form__input"
-                                placeholder="email"
-                                onChange={(e) => setRegisterEmail(e.target.value)}
-                            />
-                            <button onClick={register}>Submit</button></div>
+                            <div className="auth__form__input">
+                                <input
+                                    type="email" required autoComplete="false"
+                                    onChange={(e) => setRegisterEmail(e.target.value)}
+                                />
+                                <label>Email</label>
+                            </div>
+                            <div className="auth__form__input">
+                                <input
+                                    type="password" required autoComplete="false"
+                                    onChange={(e) => setRegisterPassword(e.target.value)}
+                                />
+                                <label>Password</label>
+                            </div>
+                            <div className="auth__form__input">
+                                <input
+                                    type="text" required autoComplete="false"
+                                    onChange={(e) => setRegisterName(e.target.value)}
+                                />
+                                <label>Name</label>
+                            </div>
+
+
+                            <button className="auth__form__btn" onClick={register}>Register</button>
+                        </div>
 
                         :
 
                         <div>
-
                             <div className="auth__form__input">
                                 <input
-
-                                    placeholder="email"
+                                    type="email" required autoComplete="false"
                                     onChange={(e) => setLoginEmail(e.target.value)}
                                 />
+                                <label>Email</label>
                             </div>
                             <div className="auth__form__input" >
                                 <input
-                                    placeholder="password"
+                                    type="password" required autoComplete="false"
                                     onChange={(e) => setLoginPassword(e.target.value)}
                                 />
+                                <label>Password</label>
                             </div>
-                            <button className="auth__form__btn" onClick={login}>Submit</button>
+                            <div className="auth__form__input">
+                                <input
+                                    type="text" required autoComplete="false"
+                                    onChange={(e) => setLoginName(e.target.value)}
+                                />
+                                <label>Name</label>
+                            </div>
+                            <button className="auth__form__btn" onClick={login}>Login</button>
                         </div>
                 }
 
