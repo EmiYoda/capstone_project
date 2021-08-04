@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth";
 import welcome from "./routes/welcome";
 import { MONGO } from "./config";
 import cookieParser from "cookie-parser";
+import postRoutes from "./routes/post";
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(
     })
 );
 app.use(express.json({ limit: "30mb" }));
-app.use(express.urlencoded({ limit: "30mb", extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 mongoose.connect(
@@ -25,7 +26,7 @@ mongoose.connect(
 
 app.use("/api", authRoutes);
 app.use("/api", welcome);
-// app.use("/api/files", fileRoutes);
+app.use("/api", postRoutes);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {

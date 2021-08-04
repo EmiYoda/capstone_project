@@ -2,17 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import App from "./components/App";
-
 import "./style/main.scss";
 import Auth from "./components/Auth/Auth";
 import Profile from './components/Dashboard/Profile';
+import NewPost from './components/Uploads/NewPost';
+
 
 function main() {
   ReactDOM.render(
     <BrowserRouter>
-      <Route path="/" exact component={App} />
-      <Route path="/auth" component={Auth} />
+      <Route path="/" exact component={document.cookie.replace('token=', '') !== '' || null || undefined ? App : Auth} />
       <Route path="/dashboard" component={Profile} />
+      <Route path="/edit/:slug" component={NewPost} />
+      <Route path="/new/post" component={NewPost} />
     </BrowserRouter>,
     document.getElementById("root")
   );

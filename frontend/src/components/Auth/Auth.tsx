@@ -16,9 +16,9 @@ const Auth = (props: any) => {
 
     const redirect = () => {
         if (token === '' || token === undefined || token === null) {
-            alert("Email or Password not correct")
+            alert("Email or Password not correct(Make sure its correct or try again)")
         } else {
-            history.push('/dashboard')
+            history.push('/')
         }
     }
 
