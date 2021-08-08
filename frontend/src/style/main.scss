@@ -41,7 +41,11 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-    background: linear-gradient(#141e30, #243b55);
+    background: #243b55;
 }
 
 @import "./Auth.scss";
+@import "./Profile.scss";
+@import "./Post.scss";
+@import "./Home.scss";
+@import "./NotFound.scss";

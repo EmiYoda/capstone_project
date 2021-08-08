@@ -6,6 +6,7 @@ import "./style/main.scss";
 import Auth from "./components/Auth/Auth";
 import Profile from './components/Dashboard/Profile';
 import NewPost from './components/Uploads/NewPost';
+import Post from './components/Uploads/Post';
 
 
 function main() {
@@ -15,6 +16,7 @@ function main() {
       <Route path="/dashboard" component={Profile} />
       <Route path="/edit/:slug" component={NewPost} />
       <Route path="/new/post" component={NewPost} />
+      <Route path="/post/:slug" component={Post} />
     </BrowserRouter>,
     document.getElementById("root")
   );

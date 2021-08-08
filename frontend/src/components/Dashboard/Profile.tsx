@@ -1,40 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import axios from "axios";
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 const Profile = () => {
     const history = useHistory();
     const [token, setToken] = useState('');
+    const [posts, setPosts] = useState([]) as any;
     const [user, setUser] = useState('');
+    const [emailUser, setEmailUser] = useState('');
     useEffect(() => {
-        try {
+        const getUser = async () => {
             setToken(document.cookie.replace('token=', ''));
-            const decoded = jwt_decode<any>(token);
-            const { name, email, user_id, iat, exp } = decoded
-            setUser(name)
-        } catch (error) {
-            console.log(error)
+            if (token !== "" || null || undefined) {
+                const decodedToken = await jwt_decode<any>(token);
+                setUser(decodedToken.name)
+                setEmailUser(decodedToken.email);
+
+                console.log(emailUser)
+                console.log(user)
+            }
         }
-    })
+
+        getData();
+
+        getUser()
+    }, [user, token, emailUser])
+
+    const getData = async () => {
+        try {
+            const resp = await axios.get("http://localhost:8000/api/post");
+            setPosts(resp.data.reverse());
+        } catch (err) {
+            console.log({ error: err });
+        }
+    };
+
+    const renderPost = () => {
+        if (posts.length === 0) {
+            return <ScaleLoader loading={true} color={"#0A748B"} />
+        } else {
+            return posts.map((post: any) => (
+                <div
+                    key={post._id}
+                    className="profile__posts"
+                    style={post.secretAuthor !== `${emailUser}` ? { display: "none" } : { display: "inherit" }}
+                >
+                    {
+                        post.secretAuthor === `${emailUser}` ?
+                            <button key={post._id}
+                                onClick={() => history.push(`/post/${post.slug}`)}
+                                className="profile__post">
+
+                                <h1 className="profile__post__title">{post.title}</h1>
+                                <img className="profile__post__img" src={post.image} alt="No Image ..." />
+                            </button>
+                            : null
+                    }
+
+                </div>
+            ));
+        }
+    };
 
     const logout = async (e: any) => {
         e.preventDefault();
         try {
             document.cookie = `token= ; expires= expires=Thu, 01 Jan 1970 00:00:00 UTC;`
-            history.push('/auth');
+            history.push('/');
 
         } catch (error) {
             console.log(error);
         }
     }
+
     return (
         <div className="profile">
 
-            <h1>{user}</h1>
+            <h1 className="title">{user}</h1>
 
             {
-                token ? <button onClick={logout}>Log Out</button> : <button onClick={() => history.push('/auth')}>Log In / Register</button>
+                token ? <button className="profile__btn" onClick={logout}>Log Out</button> : <button className="profile__btn" onClick={() => history.push('/')}>Log In / Register</button>
             }
+            <div className="posts__grid">
+
+                {renderPost()}
+            </div>
+
+
         </div>
     )
 }

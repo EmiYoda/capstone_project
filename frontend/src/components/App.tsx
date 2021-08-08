@@ -27,7 +27,7 @@ const App = () => {
       return posts.map((post: any) => (
         <button
           key={post._id}
-          onClick={() => history.push(`/article/${post.slug}`)}
+          onClick={() => history.push(`/post/${post.slug}`)}
         >
 
           {/* image={post.image}
