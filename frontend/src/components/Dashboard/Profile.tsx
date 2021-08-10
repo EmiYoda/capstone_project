@@ -53,8 +53,10 @@ const Profile = () => {
                                 onClick={() => history.push(`/post/${post.slug}`)}
                                 className="profile__post">
 
-                                <h1 className="profile__post__title">{post.title}</h1>
-                                <img className="profile__post__img" src={post.image} alt="No Image ..." />
+                                <img className="profile__post__img" src={post.image} alt="No Post" />
+                                <h1 className="profile__post__title">{"Title:  " + post.title}</h1>
+                                <h2 className="profile__post__content">{"Author:  " + post.author}</h2>
+                                <h2 className="profile__post__content">{"Description:  " + post.description}</h2>
                             </button>
                             : null
                     }
@@ -79,9 +81,10 @@ const Profile = () => {
         <div className="profile">
 
             <h1 className="title">{user}</h1>
+            <h2 className="title-2">{emailUser}</h2>
 
             {
-                token ? <button className="profile__btn" onClick={logout}>Log Out</button> : <button className="profile__btn" onClick={() => history.push('/')}>Log In / Register</button>
+                token ? <button className="profile__btn" onClick={logout}>Log Out</button> : <button className="profile__btn__cntr" onClick={() => history.push('/')}>Log In / Register</button>
             }
             <div className="posts__grid">
 

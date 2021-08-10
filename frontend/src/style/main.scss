@@ -44,6 +44,53 @@ body {
     background: #243b55;
 }
 
+.app {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &__link {
+        flex: 1 1 auto;
+        margin: 30px;
+        font-size: 14px;
+        text-decoration: none;
+        padding: 20px;
+        border: 2px solid #f7f7f7;
+        background-color: transparent;
+        text-align: center;
+        text-transform: uppercase;
+        position: relative;
+
+        overflow: hidden;
+        color: #fff;
+        transition: 0.3s;
+        width: 150px;
+
+        &:hover {
+            cursor: pointer;
+            border-radius: 30px;
+        }
+
+        &:active {
+            color: #03e9f4;
+            border: 2px solid #03e9f4;
+            border-radius: 30px;
+        }
+    }
+}
+
+@media all and (max-width: 600px) {
+    .app {
+        &__link {
+            margin: 21px;
+        }
+    }
+}
+
+@import "./Carousel.scss";
 @import "./Auth.scss";
 @import "./Profile.scss";
 @import "./Post.scss";

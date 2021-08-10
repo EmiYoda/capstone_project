@@ -19,7 +19,6 @@ const Post = () => {
                 const decode = await jwt_decode<any>(token)
 
                 setUser(decode.email)
-                console.log(post.secretAuthor)
             }
         }
 
@@ -54,14 +53,16 @@ const Post = () => {
     const adminPost = (id: any) => {
         if (document.cookie.replace('token=', '') !== '' || null || undefined) {
             return (
-                <div>
+                <div className="post__content__admin">
                     <button
                         onClick={() => deletePost(id)}
+                        className="post__content__btn"
                     >
                         Delete
                     </button>
                     <button
                         onClick={() => history.push(`/edit/${slug}`)}
+                        className="post__content__btn"
                     >
                         Edit
                     </button>
@@ -75,7 +76,7 @@ const Post = () => {
     const renderMarkdown = () => {
         if (post.markdown === undefined) {
             return (
-                <div>
+                <div className="post__content__markDown">
                     <h1>Null</h1>
                 </div>
             );
@@ -88,17 +89,14 @@ const Post = () => {
 
 
     return (
-        <div>
-            <div>
-                {/* <img src={post.image} alt="ALT" /> */}
-                <h1>{post.title}</h1>
-                <h2>{post.description}</h2>
-                <h4>{post.createdAt}</h4>
-                <h5>{post.author}</h5>
-                {post.secretAuthor === user ? adminPost(post._id) : null}
-            </div>
+        <div className="post">
+            <img className="post__content__img" src={post.image} alt="Post Img" />
+            <h1 className="post__content">{"Title : " + post.title}</h1>
+            <h2 className="post__content">{"Description : " + post.description}</h2>
+            <h3 className="post__content">{"Author : " + post.author}</h3>
             <hr />
             {renderMarkdown()}
+            {post.secretAuthor === user ? adminPost(post._id) : null}
         </div>
     )
 }

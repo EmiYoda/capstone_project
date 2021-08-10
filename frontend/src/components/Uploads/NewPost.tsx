@@ -51,7 +51,7 @@ const NewPost = () => {
         decodeUser()
 
         console.log("Hello")
-    }, [slug, token, author, secretAuthor]);
+    }, [slug, token, author, secretAuthor, post]);
 
 
     const getArticleBySlug = async (slug: any) => {
@@ -95,44 +95,57 @@ const NewPost = () => {
 
 
     return (
-        <div>
-
-            {document.cookie.replace('token=', '') !== '' || null || undefined ? <form onSubmit={onSubmit}>
+        <div className="newPost">
+            {document.cookie.replace('token=', '') !== '' || null || undefined ? <form onSubmit={onSubmit} className="newPost__form">
                 <ScaleLoader loading={loading} color={"#0A748B"} />
-                <input
-                    type="text"
-                    required={editing ? false : true}
-                    placeholder="Url image"
-                    name="image"
-                    value={post.image}
-                    onChange={changeHandler}
-                />
-                <input
-                    type="text"
-                    required={editing ? false : true}
-                    placeholder="Title"
-                    name="title"
-                    value={post.title}
-                    onChange={changeHandler}
-                />
-                <input
-                    type="text"
-                    required={editing ? false : true}
-                    placeholder="Description"
-                    name="description"
-                    value={post.description}
-                    onChange={changeHandler}
-                />
-                <textarea
-                    required={editing ? false : true}
-                    placeholder="Markdown here"
-                    name="markdown"
-                    value={post.markdown}
-                    onChange={changeHandler}
-                />
+                <h1 className="newPost__title">{editing ? "Edit Post" : "New Post"}</h1>
+
+                <div className="newPost__form__input">
+                    <input
+                        type="text"
+                        required={editing ? false : true}
+                        placeholder="Url image"
+                        name="image"
+                        value={post.image}
+                        onChange={changeHandler}
+                    />
+                </div>
+
+                <div className="newPost__form__input">
+                    <input
+                        type="text"
+                        required={editing ? false : true}
+                        placeholder="Title"
+                        name="title"
+                        value={post.title}
+                        onChange={changeHandler}
+                    />
+                </div>
+
+                <div className="newPost__form__input">
+                    <input
+                        type="text"
+                        required={editing ? false : true}
+                        placeholder="Description"
+                        name="description"
+                        value={post.description}
+                        onChange={changeHandler}
+                    />
+                </div>
+
+                <div className="newPost__form__input">
+                    <textarea
+                        required={editing ? false : true}
+                        placeholder="Markdown here"
+                        name="markdown"
+                        value={post.markdown}
+                        onChange={changeHandler}
+                    />
+                </div>
+
                 <div>
-                    <button onClick={() => history.goBack()}>Back</button>
-                    <button type="submit">{editing ? "Edit" : "Create"}</button>
+                    <button className="newPost__form__btn" onClick={() => history.goBack()}>Back</button>
+                    <button className="newPost__form__btn" type="submit">{editing ? "Edit" : "Create"}</button>
                 </div>
             </form> : <Link to="/auth">Login or Register</Link>}
         </div>

@@ -1,15 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import Carousel from "./Carousel";
 
 
 const App = () => {
-  let history = useHistory();
   const [posts, setPosts] = useState([]);
+  const [index, setIndex] = useState(0);
+  const [xPosition, setXPosition] = useState(0);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     getData();
   }, []);
+
+  const handleClickPrev = () => {
+    if (index === 0) return;
+    setIndex(index - 1);
+    setXPosition(xPosition + width);
+  };
+
+
+
+  const handleClicknext = () => {
+    console.log(xPosition)
+    console.log(index)
+    console.log(width)
+    if (index === posts.length - 1) {
+      setIndex(0);
+      setXPosition(0);
+    } else {
+      setIndex(index + 1);
+      setXPosition(xPosition - width);
+    }
+  };
 
   const getData = async () => {
     try {
@@ -20,34 +44,19 @@ const App = () => {
     }
   };
 
-  const renderPost = () => {
-    if (posts.length === 0) {
-      return <i className="gg-spinner-two"></i>
-    } else {
-      return posts.map((post: any) => (
-        <button
-          key={post._id}
-          onClick={() => history.push(`/post/${post.slug}`)}
-        >
-
-          {/* image={post.image}
-            title={post.title}
-            description={post.description}
-            createdAt={post.createdAt} */}
-
-          <h1>
-            {post.title}
-          </h1>
-          {/* <img src={post.image} alt="ALT" /> */}
-          <h2>{post.description}</h2>
-        </button>
-      ));
-    }
-  };
-
   return (
     <div className="app">
-      {renderPost()}
+      <div className="app__links">
+        <Link to="/dashboard" className="app__link"> DashBoard </Link>
+        <Link to="/new/post" className="app__link"> Create New Post </Link>
+      </div>
+      <Carousel
+        posts={posts}
+        setWidth={setWidth}
+        xPosition={xPosition}
+        handleClickPrev={handleClickPrev}
+        handleClicknext={handleClicknext}
+      />
     </div>
   )
 };

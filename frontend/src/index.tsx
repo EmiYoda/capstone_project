@@ -13,10 +13,10 @@ function main() {
   ReactDOM.render(
     <BrowserRouter>
       <Route path="/" exact component={document.cookie.replace('token=', '') !== '' || null || undefined ? App : Auth} />
-      <Route path="/dashboard" component={Profile} />
-      <Route path="/edit/:slug" component={NewPost} />
-      <Route path="/new/post" component={NewPost} />
-      <Route path="/post/:slug" component={Post} />
+      <Route path="/dashboard" exact component={Profile} />
+      <Route path="/edit/:slug" exact component={NewPost} />
+      <Route path="/new/post" exact component={NewPost} />
+      <Route path="/post/:slug" exact component={Post} />
     </BrowserRouter>,
     document.getElementById("root")
   );
