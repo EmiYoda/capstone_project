@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: "https://capstone-project-sooty.vercel.app/",
     })
 );
 app.use(express.json({ limit: "30mb" }));
