@@ -11,7 +11,7 @@ const app = express();
 
 app.use(
     cors({
-        origin: "https://capstone-project-sooty.vercel.app/",
+        origin: "https://capstone-project-backend-photodb.vercel.app/",
     })
 );
 app.use(express.json({ limit: "30mb" }));
