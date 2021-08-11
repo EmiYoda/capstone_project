@@ -3,7 +3,7 @@ import auth from "../middlewares/auth";
 
 const router = express.Router();
 
-router.post("/welcome", auth, (req, res) => {
+router.post("/welcome", auth, (_req, res) => {
     res.status(200).send("Welcome");
 });
 

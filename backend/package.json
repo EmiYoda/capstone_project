@@ -4,10 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "tsc -w",
-    "dev": "nodemon dist/app.js",
-    "start": "node dist/app.js"
+    "start": "node dist/app.js",
+    "postinstall": "tsc",
+    "watch-node": "nodemon dist/app.js",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main"
   },
+  "engines": {"node": "14.16.0"},
   "keywords": [],
   "author": "3mi <emilianodelvalle@icloud.com> (https://www.npmjs.com/~3mi)",
   "license": "ISC",
@@ -41,9 +44,7 @@
     "typescript": "^4.3.5",
     "validator": "^13.6.0",
     "ts-node": "^10.1.0",
-    "nodemon": "^2.0.12"
-  },
-  "devDependencies": {
+    "nodemon": "^2.0.12",
     "@types/argon2": "^0.15.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",

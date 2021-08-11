@@ -1,7 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { SECRET } from "../config";
 
 export const register = async (req: any, res: any) => {
     try {
@@ -25,9 +24,13 @@ export const register = async (req: any, res: any) => {
             password: encryptedPassword,
         });
 
-        const token = jwt.sign({ user_id: user._id, email, name }, SECRET, {
-            expiresIn: "2h",
-        });
+        const token = jwt.sign(
+            { user_id: user._id, email, name },
+            "c4b7a440-65a2-4ac4-a835-64131ac5f095",
+            {
+                expiresIn: "2h",
+            }
+        );
         user.token = token;
 
         res.status(201).json(user);
@@ -47,9 +50,13 @@ export const login = async (req: any, res: any) => {
         const user = await User.findOne({ email });
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign({ user_id: user._id, email, name }, SECRET, {
-                expiresIn: "2h",
-            });
+            const token = jwt.sign(
+                { user_id: user._id, email, name },
+                "c4b7a440-65a2-4ac4-a835-64131ac5f095",
+                {
+                    expiresIn: "2h",
+                }
+            );
 
             user.token = token;
 

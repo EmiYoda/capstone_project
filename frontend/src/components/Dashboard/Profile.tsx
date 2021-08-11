@@ -30,7 +30,7 @@ const Profile = () => {
 
     const getData = async () => {
         try {
-            const resp = await axios.get("http://localhost:8000/api/post");
+            const resp = await axios.get("https://photodb-backend-capstone.herokuapp.com/api/post");
             setPosts(resp.data.reverse());
         } catch (err) {
             console.log({ error: err });

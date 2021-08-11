@@ -28,7 +28,7 @@ const Post = () => {
 
     const getDataBySlug = async (slug: any) => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/post/${slug}`);
+            const res = await axios.get(`https://photodb-backend-capstone.herokuapp.com/api/post/${slug}`);
             setPost(res.data);
         } catch (err) {
             console.log({ error: err });
@@ -40,7 +40,7 @@ const Post = () => {
             if (window.confirm("Do you wanna delete this post?")) {
                 try {
 
-                    await axios.delete(`http://localhost:8000/api/delete/${id}`);
+                    await axios.delete(`https://photodb-backend-capstone.herokuapp.com/api/delete/${id}`);
                     history.push("/");
                 } catch (err) {
                     console.log({ error: err });

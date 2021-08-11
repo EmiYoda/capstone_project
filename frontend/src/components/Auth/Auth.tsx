@@ -31,7 +31,7 @@ const Auth = (props: any) => {
                     name: registerName,
                     password: registerPassword,
                 },
-                url: "http://localhost:8000/api/register"
+                url: "https://photodb-backend-capstone.herokuapp.com/api/register"
             })
             setToken(call.data.token);
             const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();
@@ -52,7 +52,7 @@ const Auth = (props: any) => {
                     name: loginName,
                     password: loginPassword,
                 },
-                url: "http://localhost:8000/api/login"
+                url: "https://photodb-backend-capstone.herokuapp.com/api/login"
             })
             setToken(call.data.token);
             const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();

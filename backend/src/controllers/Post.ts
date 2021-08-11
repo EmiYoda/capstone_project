@@ -2,7 +2,7 @@ import Post from "../models/Post";
 
 const PostCtrl = {} as any;
 
-PostCtrl.getPosts = async (req: any, res: any) => {
+PostCtrl.getPosts = async (_req: any, res: any) => {
     try {
         const posts = await Post.find();
         if (posts) {

@@ -56,7 +56,7 @@ const NewPost = () => {
 
     const getArticleBySlug = async (slug: any) => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/post/${slug}`);
+            const res = await axios.get(`https://photodb-backend-capstone.herokuapp.com/api/post/${slug}`);
             setPost(res.data);
             setId(res.data._id);
         } catch (err) {
@@ -77,14 +77,14 @@ const NewPost = () => {
         if (document.cookie.replace('token=', '') !== '' || null || undefined) {
             if (editing) {
                 try {
-                    await axios.put(`http://localhost:8000/api/update/${id}`, post);
+                    await axios.put(`https://photodb-backend-capstone.herokuapp.com/api/update/${id}`, post);
                     history.push(`/post/${slug}`);
                 } catch (err) {
                     console.log({ error: err });
                 }
             } else {
                 try {
-                    await axios.post("http://localhost:8000/api/new/post", post);
+                    await axios.post("https://photodb-backend-capstone.herokuapp.com/api/new/post", post);
                     history.push("/");
                 } catch (err) {
                     console.log({ error: err });

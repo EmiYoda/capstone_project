@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { SECRET } from "../config";
 
 const verifyToken = (req: any, res: any, next: any) => {
     const token =
@@ -9,7 +8,10 @@ const verifyToken = (req: any, res: any, next: any) => {
         return res.status(403).send("A token is required for authentication");
     }
     try {
-        const decoded = jwt.verify(token, SECRET);
+        const decoded = jwt.verify(
+            token,
+            "c4b7a440-65a2-4ac4-a835-64131ac5f095"
+        );
         req.user = decoded;
     } catch (err) {
         return res.status(401).send("Invalid Token");
