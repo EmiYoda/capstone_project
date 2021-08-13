@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios"
+import { useHistory } from 'react-router-dom';
 
 
 const Auth = (props: any) => {
@@ -11,12 +12,13 @@ const Auth = (props: any) => {
     const [loginPassword, setLoginPassword] = useState("");
     const [isSignup, setIsSignup] = useState(false);
     const [token, setToken] = useState(props.token);
+    const history = useHistory();
 
     const redirect = () => {
         if (token === '' || token === undefined || token === null) {
             alert("Email or Password not correct(Make sure its correct or try again)")
         } else {
-            document.location.reload()
+            history.push("/")
         }
     }
 
@@ -36,7 +38,7 @@ const Auth = (props: any) => {
             setToken(call.data.token);
             const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();
             document.cookie = `token=${token}; secure=true; samesite=lax; max-age=${expires + 86400}; http-only=true`;
-            redirect()
+            window.location.reload()
         } catch (error) {
             console.log(error)
         }
