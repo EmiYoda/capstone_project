@@ -3,7 +3,7 @@ import axios from "axios";
 import { useHistory, useParams, Link } from "react-router-dom";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import jwt_decode from 'jwt-decode';
-import { ContactSupportOutlined } from '@material-ui/icons';
+
 
 const NewPost = () => {
     const history = useHistory();
@@ -28,7 +28,6 @@ const NewPost = () => {
             getArticleBySlug(slug);
             setEditing(true);
         }
-
         // if (token !== "" || null || undefined) {}
 
         if (author !== "" || null || undefined) {
@@ -80,7 +79,7 @@ const NewPost = () => {
                     await axios.post("https://photodb-backend-capstone.herokuapp.com/api/new/post", post);
                     history.push("/");
                 } catch (err) {
-                    console.log({ error: err });
+                    alert("Post Title Alredy exists please change it")
                 }
             }
         }
@@ -141,7 +140,8 @@ const NewPost = () => {
                         alert("the inputs that are empty will lose the data")
                         history.goBack()
                     }}>Back</button>
-                    <button className="newPost__form__btn" type="submit">{editing ? "Edit" : "Create"}</button>
+                    <button className="newPost__form__btn"
+                        type="submit">{editing ? "Edit" : "Create"}</button>
                 </div>
             </form> : <Link to="/auth">Login or Register</Link>}
         </div>
