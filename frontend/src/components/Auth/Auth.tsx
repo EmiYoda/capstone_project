@@ -16,7 +16,7 @@ const Auth = (props: any) => {
 
     const redirect = () => {
         if (token === '' || token === undefined || token === null) {
-            alert("Email or Password not correct(Make sure its correct or try again)")
+            alert("try again)")
         } else {
             history.push("/")
         }
@@ -36,12 +36,13 @@ const Auth = (props: any) => {
                 url: "https://photodb-backend-capstone.herokuapp.com/api/register"
             })
             setToken(call.data.token);
-            const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();
-            document.cookie = `token=${token}; secure=true; samesite=lax; max-age=${expires + 86400}; http-only=true`;
+            const expires = (new Date(Date.now() + 864000000 * 1000)).toUTCString();
+            document.cookie = `token=${token}; secure=true; samesite=lax; max-age=${expires + 1}; http-only=true`;
 
             alert("User Created Please Login")
             window.location.reload();
         } catch (error) {
+            alert("user alredy exists")
             console.log(error)
         }
     }
@@ -59,10 +60,11 @@ const Auth = (props: any) => {
                 url: "https://photodb-backend-capstone.herokuapp.com/api/login"
             })
             setToken(call.data.token);
-            const expires = (new Date(Date.now() + 86400 * 1000)).toUTCString();
-            document.cookie = `token=${token}; secure=true; samesite=lax; max-age=${expires + 86400}; http-only=true`;
+            const expires = (new Date(Date.now() + 864000000 * 1000)).toUTCString();
+            document.cookie = `token=${token}; secure=true; samesite=lax; expires=${expires + 1}; http-only=true`;
             redirect()
         } catch (error) {
+            alert("Invalid Credentials")
             console.log(error)
         }
     }
@@ -72,14 +74,15 @@ const Auth = (props: any) => {
         <div className="auth">
             <h3 className={isSignup ? "auth__option" : "active"} onClick={() => setIsSignup(false)} >Log In</h3>
             <h3 className={isSignup ? "active" : "auth__option"} onClick={() => setIsSignup(true)}>Register</h3>
-            <form autoComplete="off" className="auth__form">
+            <form autoComplete="new-false" className="auth__form">
                 <h2>{isSignup ? "Register" : "Login"}</h2>
                 {
                     isSignup ?
                         <div>
                             <div className="auth__form__input">
                                 <input
-                                    type="email" required autoComplete="false"
+                                    type="email" required
+                                    autoComplete="new-false"
                                     onChange={(e) => setRegisterEmail(e.target.value)}
                                     id="registerInput"
                                 />
@@ -87,7 +90,8 @@ const Auth = (props: any) => {
                             </div>
                             <div className="auth__form__input">
                                 <input
-                                    type="password" required autoComplete="false"
+                                    type="password" required
+                                    autoComplete="new-false"
                                     onChange={(e) => setRegisterPassword(e.target.value)}
                                     id="registerInput"
                                 />
@@ -95,7 +99,8 @@ const Auth = (props: any) => {
                             </div>
                             <div className="auth__form__input">
                                 <input
-                                    type="text" required autoComplete="false"
+                                    type="text" required
+                                    autoComplete="new-false"
                                     onChange={(e) => setRegisterName(e.target.value)}
                                     id="registerInput"
                                 />
@@ -111,21 +116,23 @@ const Auth = (props: any) => {
                         <div>
                             <div className="auth__form__input">
                                 <input
-                                    type="email" required autoComplete="false"
+                                    type="email" required autoComplete="new-false"
                                     onChange={(e) => setLoginEmail(e.target.value)}
                                 />
                                 <label>Email</label>
                             </div>
                             <div className="auth__form__input" >
                                 <input
-                                    type="password" required autoComplete="false"
+                                    type="password" required
+                                    autoComplete="new-false"
                                     onChange={(e) => setLoginPassword(e.target.value)}
                                 />
                                 <label>Password</label>
                             </div>
                             <div className="auth__form__input">
                                 <input
-                                    type="text" required autoComplete="false"
+                                    type="text" required
+                                    autoComplete="new-false"
                                     onChange={(e) => setLoginName(e.target.value)}
                                 />
                                 <label>Name</label>
